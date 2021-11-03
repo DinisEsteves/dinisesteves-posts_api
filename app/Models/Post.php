@@ -37,4 +37,12 @@ class Post extends Model
     protected $hidden = [
         'post_password',
     ];
+
+    public function childrens(){
+        return $this->hasMany(Post::class, 'post_parent' , 'ID');
+    }
+
+    public function parent(){
+        return $this->hasOne(Post::class, 'ID', 'post_parent');
+    }
 }
