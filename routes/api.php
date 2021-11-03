@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthControllerAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('test', function(){
+        return "aaa";
+    });
+});
+
+Route::name('auth.')->prefix('auth')->group(function () {
+    Route::post('/signin', [AuthControllerAPI::class, 'index'])->name('signin');
 });

@@ -13,6 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'wp_users';
+    protected $primaryKey = 'ID';
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +37,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'user_pass',
+        'password',
         'user_activation_key',
     ];
 
