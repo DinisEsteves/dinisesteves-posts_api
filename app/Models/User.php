@@ -37,16 +37,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
+        'user_pass',
         'user_activation_key',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        //'email_verified_at' => 'datetime',
-    ];
+    public function getAuthPassword() {
+        return $this->user_pass;
+     }
 }
