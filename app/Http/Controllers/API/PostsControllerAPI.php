@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
+use Illuminate\Http\Response;
+use App\Models\Post;
+use App\Http\Requests\API\PostRequest;
 class PostsControllerAPI extends Controller
 {
     /**
@@ -12,8 +13,13 @@ class PostsControllerAPI extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(PostRequest $request)
     {
-        
+     $posts = Post::all();
+
+      return response()->json([
+            'status' => Response::HTTP_OK,
+            'posts' => $posts
+        ],Response::HTTP_OK);
     }
 }
