@@ -17,22 +17,34 @@ class AuthControllerAPI extends Controller
      */
     public function index(SigninRequest $request)
     {
-        if (!Auth::attempt($request->validated())) {
+        try{
+            if (!Auth::attempt($request->validated())) {
+                return response()->json(
+                    [
+                        'error' => 'Invalid credentials',
+                        'status' => Response::HTTP_UNPROCESSABLE_ENTITY
+                    ],
+                    Response::HTTP_UNPROCESSABLE_ENTITY
+                );
+            }
+    
+            $accessToken = auth()->user()->createToken('Bearer Token');
+
+            return response()->json([
+                'token_type' => 'Bearer',
+                'access_token' => $accessToken->plainTextToken,
+                'status' => Response::HTTP_OK      
+            ],Response::HTTP_OK);       
+
+        }catch(\Exception $ex){
             return response()->json(
                 [
-                    'error' => 'Invalid credentials',
-                    'status' => Response::HTTP_UNPROCESSABLE_ENTITY
+                    'error' => $ex->getMessage(),
+                    'status' => Response::HTTP_INTERNAL_SERVER_ERROR
                 ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
+                Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
-        $accessToken = auth()->user()->createToken('Bearer Token');
-        return response()->json([
-            'token_type' => 'Bearer',
-            'access_token' => $accessToken->plainTextToken,
-            'status' => Response::HTTP_OK      
-        ],Response::HTTP_OK);
     }
 
     /**
@@ -43,11 +55,24 @@ class AuthControllerAPI extends Controller
      */
     public function destroy()
     {
-        auth()->user()->tokens()->delete();
+        try{
+            auth()->user()->tokens()->delete();
 
-        return response()->json([
-            'error' => 'Tokens Revoked',
-            'status' => Response::HTTP_OK
-        ],Response::HTTP_OK);
+            return response()->json([
+                'error' => 'Tokens Revoked',
+                'status' => Response::HTTP_OK
+            ],Response::HTTP_OK);
+            
+        }catch(\Exception $ex){
+            return response()->json(
+                [
+                    'error' => $ex->getMessage(),
+                    'status' => Response::HTTP_INTERNAL_SERVER_ERROR
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+
     }
 }
