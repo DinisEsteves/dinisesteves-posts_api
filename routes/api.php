@@ -25,6 +25,6 @@ use Illuminate\Support\Facades\Route;
 Route::name('auth.')->prefix('auth')->group(function () {
     Route::post('/signin', [AuthControllerAPI::class, 'index'])->name('signin');
     Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::get('logout',  [AuthControllerAPI::class, 'destroy'])->name('logout');
+        Route::get('signout',  [AuthControllerAPI::class, 'destroy'])->name('signout');
     });
 });
