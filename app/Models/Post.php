@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -38,11 +39,18 @@ class Post extends Model
         'post_password',
     ];
 
-    public function childrens(){
-        return $this->hasMany(Post::class, 'post_parent' , 'ID');
+    public function childrens()
+    {
+        return $this->hasMany(Post::class, 'post_parent', 'ID');
     }
 
-    public function parent(){
-        return $this->hasOne(Post::class, 'ID', 'post_parent');
+    public function parents()
+    {
+        return $this->hasMany(Post::class, 'ID', 'post_parent');
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 }
