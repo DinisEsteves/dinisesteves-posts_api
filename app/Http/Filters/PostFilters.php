@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PostFilters extends QueryFilter
 {
+    public const DEFAULT_FILTERS = [
+        "orderby" => "post_date",
+        "order" => "desc",
+        "post_type" => "post",
+        "post_status" => "publish",
+    ];
 
     public function orderby(string $orderby): Builder
     {
-        return $this->builder->orderby($orderby);
+        return $this->builder->orderby($orderby, $this->request["order"] ?? self::DEFAULT_FILTERS["order"]);
     }
 
     /**

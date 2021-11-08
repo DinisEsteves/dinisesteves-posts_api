@@ -18,7 +18,9 @@ class PostsControllerAPI extends Controller
      */
     public function index(PostRequest $request, PostFilters $filters)
     {
-        $posts = Post::filter($filters)->get();
+        $array = [...PostFilters::DEFAULT_FILTERS, ...$filters->filters()];
+
+        $posts = Post::filter(new PostFilters($array))->get();
 
         return response()->json(['status' => Response::HTTP_OK, 'total_records' => $posts->count(), 'posts' => $posts], Response::HTTP_OK);
     }
