@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Models\Post;
 use App\Http\Requests\API\PostRequest;
 use App\Http\Filters\PostFilters;
+use App\Http\Resources\PostResource;
 use Illuminate\Support\Arr;
 
 class PostsControllerAPI extends Controller
@@ -16,12 +17,12 @@ class PostsControllerAPI extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PostRequest $request, PostFilters $filters)
+    public function index(PostRequest $request)
     {
-        $array = [...PostFilters::DEFAULT_FILTERS, ...$filters->filters()];
+        $array = [...PostFilters::DEFAULT_FILTERS, ...$request->validated()];
 
-        $posts = Post::filter(new PostFilters($array))->get();
+        $posts = Post::filter(new PostFilters($array))->paginate($array["posts_per_page"]);
 
-        return response()->json(['status' => Response::HTTP_OK, 'total_records' => $posts->count(), 'posts' => $posts], Response::HTTP_OK);
+        return PostResource::collection($posts);
     }
 }

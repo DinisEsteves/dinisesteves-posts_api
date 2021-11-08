@@ -3,6 +3,7 @@
 namespace App\Http\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostFilters extends QueryFilter
 {
@@ -11,6 +12,7 @@ class PostFilters extends QueryFilter
         "order" => "desc",
         "post_type" => "post",
         "post_status" => "publish",
+        "posts_per_page" => 1,
     ];
 
     public function orderby(string $orderby): Builder
