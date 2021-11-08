@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Http\Requests\API\PostRequest;
 use App\Http\Filters\PostFilters;
 use App\Http\Resources\PostResource;
-use Illuminate\Support\Arr;
+use App\Http\Services\PostService;
 
 class PostsControllerAPI extends Controller
 {
@@ -19,10 +19,10 @@ class PostsControllerAPI extends Controller
      */
     public function index(PostRequest $request)
     {
-        $array = [...PostFilters::DEFAULT_FILTERS, ...$request->validated()];
+        $filters = new PostFilters($request);
 
-        $posts = Post::filter(new PostFilters($array))->paginate($array["posts_per_page"]);
+        $posts = Post::filter($filters)->paginate($filters->filters["posts_per_page"]);
 
-        return PostResource::collection($posts);
+        return PostResource::collection(PostService::cache($request->boolean('cache'), $posts));
     }
 }

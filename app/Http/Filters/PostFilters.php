@@ -3,10 +3,11 @@
 namespace App\Http\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostFilters extends QueryFilter
 {
+    public array $filters = [];
+
     public const DEFAULT_FILTERS = [
         "orderby" => "post_date",
         "order" => "desc",
@@ -15,6 +16,17 @@ class PostFilters extends QueryFilter
         "posts_per_page" => 1,
     ];
 
+    public function __construct($request = null)
+    {
+        parent::__construct($request);
+        $this->filters =  [...self::DEFAULT_FILTERS, ...$this->request->validated()];
+    }
+
+    /**
+     * Sort retrieved posts by parameter and designates the ascending or descending order of the 'orderby' parameter.
+     * @param string $orderby 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function orderby(string $orderby): Builder
     {
         return $this->builder->orderby($orderby, $this->request["order"] ?? self::DEFAULT_FILTERS["order"]);
