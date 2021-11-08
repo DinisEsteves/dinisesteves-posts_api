@@ -30,8 +30,8 @@ class PostRequest extends FormRequest
             "post_name" => ['string'],
             "post_type" => ['string'],
             "post_status" => ['string'],
-            "post_children" => ['string','integer'],
-            "post_parent" => ['string','integer'],
+            "post_children" => ['string'],
+            "post_parent" => ['string'],
             "posts_per_page" => ['integer']
         ];
     }

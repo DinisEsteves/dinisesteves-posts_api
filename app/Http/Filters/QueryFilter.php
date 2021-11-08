@@ -2,7 +2,6 @@
 
 namespace App\Http\Filters;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
 abstract class QueryFilter
@@ -10,8 +9,11 @@ abstract class QueryFilter
     protected $request;
     protected $builder;
 
-    public function __construct(Request $request)
+    public function __construct($request = null)
     {
+        if (is_null($request)) {
+            $request = request();
+        }
         $this->request = $request;
     }
 
@@ -30,6 +32,10 @@ abstract class QueryFilter
 
     public function filters()
     {
-        return $this->request->all();
+        if (is_array($this->request)) {
+            return $this->request;
+        }
+
+        return method_exists($this->request, 'all') ? $this->request->all() : [];
     }
 }

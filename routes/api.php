@@ -30,7 +30,6 @@ Route::name('auth.')->prefix('auth')->group(function () {
     });
 });
 
-
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::name('posts.')->prefix('posts')->group(function () {
         Route::get('/', [PostsControllerAPI::class, 'index'])->name('inex');
