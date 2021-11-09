@@ -26,3 +26,11 @@ The result will be available at http://localhost.
 
 Testing api post method.
 
+* Signin endpoint sendind a post with user_email and password: http://localhost/api/v1/auth/signin , this will return an acess token.
+
+
+* http://localhost/api/v1/posts?posts_per_page=5&post_status=draft You have to send you Bearer token returned from signin endpoint in authorization header.
+
+
+
+
