@@ -22,6 +22,8 @@ class PostsControllerAPI extends Controller
 
         $posts = Post::filter($filters)->paginate($filters->filters["posts_per_page"]);
 
-        return PostResource::collection(PostService::cache($request->boolean('cache'), $posts));
+        return PostResource::collection(
+            PostService::cache($request->boolean('cache'), $posts)
+        );
     }
 }
