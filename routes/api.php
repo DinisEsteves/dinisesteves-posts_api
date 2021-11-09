@@ -17,21 +17,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-/*
-|--------------------------------------------------------------------------
-| Auth endpoints
-|--------------------------------------------------------------------------
-*/
-
-Route::name('auth.')->prefix('auth')->group(function () {
-    Route::post('/signin', [AuthControllerAPI::class, 'index'])->name('signin');
-    Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::get('signout',  [AuthControllerAPI::class, 'destroy'])->name('signout');
+Route::name('v1.')->prefix('v1')->group(function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Auth endpoints
+    |--------------------------------------------------------------------------
+    */
+    Route::name('auth.')->prefix('auth')->group(function () {
+        Route::post('/signin', [AuthControllerAPI::class, 'index'])->name('signin');
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+            Route::get('signout',  [AuthControllerAPI::class, 'destroy'])->name('signout');
+        });
     });
-});
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::name('posts.')->prefix('posts')->group(function () {
-        Route::get('/', [PostsControllerAPI::class, 'index'])->name('inex');
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        /*
+        |--------------------------------------------------------------------------
+        | Posts API endpoints
+        |--------------------------------------------------------------------------
+        */
+        Route::name('posts.')->prefix('posts')->group(function () {
+            Route::get('/', [PostsControllerAPI::class, 'index'])->name('inex');
+        });
     });
 });
