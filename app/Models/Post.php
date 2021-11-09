@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -37,4 +38,19 @@ class Post extends Model
     protected $hidden = [
         'post_password',
     ];
+
+    public function childrens()
+    {
+        return $this->hasMany(Post::class, 'post_parent', 'ID');
+    }
+
+    public function parents()
+    {
+        return $this->hasMany(Post::class, 'ID', 'post_parent');
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
+    }
 }

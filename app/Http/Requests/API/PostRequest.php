@@ -24,15 +24,15 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            "orderby" => [],
-            "order" => [],
-            "post_id" => [],
-            "post_name" => [],
-            "post_type" => [],
-            "post_status" => [],
-            "post_children" => [],
-            "post_parent" => [],
-            "posts_per_page" => [],
+            "orderby" => ['string'],
+            "order" => ['string'],
+            "post_id" => ['integer'],
+            "post_name" => ['string'],
+            "post_type" => ['string'],
+            "post_status" => ['string'],
+            "post_children" => ['string'],
+            "post_parent" => ['string'],
+            "posts_per_page" => ['integer']
         ];
     }
 }
